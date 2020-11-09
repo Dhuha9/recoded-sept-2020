@@ -1,0 +1,89 @@
+<%- include('header', { title: title }); %> <%- include('nav_bar', { id: id ,
+user: user }); %>
+
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    <div class="col-md-8 col-lg-6">
+      <div class="login d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto" id="login_dialog">
+              <h3 class="login-heading mb-4"><%= title %></h3>
+              <form id="profile_form">
+                <div class="form-label-group">
+                  <input type="text" id="profile_firstname" class="form-control"
+                  placeholder="Username" value="<%= user.firstname %>" <% if (id
+                  == "profile") { %> disabled= "true"<% } %> required autofocus
+                  />
+                  <label for="profile_firstname">First Name</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input type="text" id="profile_lastname" class="form-control"
+                  placeholder="Username" value="<%= user.lastname %>" <% if (id
+                  == "profile") { %> disabled= "true"<% } %> required autofocus
+                  />
+                  <label for="profile_lastname">Last Name</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input type="text" id="profile__briefBio" class="form-control"
+                  placeholder="Username" value="<%= user.briefBio %>" <% if (id
+                  == "profile") { %> disabled= "true"<% } %> required autofocus
+                  />
+                  <label for="profile__briefBio">Brief Bio</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input type="text" id="profile__birthday" class="form-control"
+                  placeholder="Username" value="<%= user.birthday %>" <% if (id
+                  == "profile") { %> disabled= "true"<% } %> required autofocus
+                  />
+                  <label for="profile__birthday">Birthday</label>
+                </div>
+
+                <% if (id == "profile") { %>
+                <a
+                  class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
+                  id="edite_button"
+                  href="/users/profile/edite"
+                >
+                  Edite Profile
+                </a>
+                <% } %> <% if (id == "profileEdite") { %>
+                <div class="btn-div">
+                  <button
+                    class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold m-2"
+                    type="submit"
+                    id="save_profile_button"
+                  >
+                    Save
+                  </button>
+                  <a
+                    class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold m-2"
+                    id="show_create_user_button"
+                    href="/users/profile"
+                  >
+                    Cancel
+                  </a>
+                </div>
+                <% } %>
+
+                <div
+                  class="alert alert-danger fade show"
+                  style="display: none"
+                  id="profile_error"
+                >
+                  <h4 class="alert-heading">Error!</h4>
+                  <span id="profile_error_message"></span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('footer', { javascript_uri: '/javascripts/edite_profile.js' }); %>

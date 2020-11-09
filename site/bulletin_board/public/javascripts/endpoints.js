@@ -1,4 +1,3 @@
-
 // Posts
 
 /**
@@ -17,28 +16,28 @@
 function create_post(title, message, callback) {
   var post = {
     title: title,
-    message: message
+    message: message,
   };
 
   $.ajax({
-      type: "POST",
-      url: "/posts/",
-      data: JSON.stringify(post),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(result){
-        callback({
-          success: true,
-          redirect_uri: result.redirect_uri
-        });
-      },
-      error: function(error) {
-        callback({
-          success: false,
-          redirect_uri: null,
-          error_message: error.responseJSON.error_message
-        });
-      }
+    type: "POST",
+    url: "/posts/",
+    data: JSON.stringify(post),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
   });
 }
 
@@ -51,16 +50,16 @@ function create_post(title, message, callback) {
  */
 function upvote(id, state) {
   var vote = {
-    upvoted: state
+    upvoted: state,
   };
 
   $.ajax({
-      type: "POST",
-      url: "/posts/" + id + "/upvotes",
-      data: JSON.stringify(vote),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json"
-    });
+    type: "POST",
+    url: "/posts/" + id + "/upvotes",
+    data: JSON.stringify(vote),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+  });
 }
 
 // Users
@@ -81,28 +80,28 @@ function upvote(id, state) {
 function signup(username, password, callback) {
   var credentials = {
     username: username,
-    password: password
+    password: password,
   };
 
   $.ajax({
-      type: "POST",
-      url: "/users/",
-      data: JSON.stringify(credentials),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(result){
-        callback({
-          success: true,
-          redirect_uri: result.redirect_uri
-        });
-      },
-      error: function(error) {
-        callback({
-          success: false,
-          redirect_uri: null,
-          error_message: error.responseJSON.error_message
-        });
-      }
+    type: "POST",
+    url: "/users/",
+    data: JSON.stringify(credentials),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
   });
 }
 
@@ -122,27 +121,50 @@ function signup(username, password, callback) {
 function login(username, password, callback) {
   var credentials = {
     username: username,
-    password: password
+    password: password,
   };
 
   $.ajax({
-      type: "POST",
-      url: "/users/login",
-      data: JSON.stringify(credentials),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(result){
-        callback({
-          success: true,
-          redirect_uri: result.redirect_uri
-        });
-      },
-      error: function(error) {
-        callback({
-          success: false,
-          redirect_uri: null,
-          error_message: error.responseJSON.error_message
-        });
-      }
+    type: "POST",
+    url: "/users/login",
+    data: JSON.stringify(credentials),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
+  });
+}
+
+function edite_profile(userInfo, callback) {
+  $.ajax({
+    type: "POST",
+    url: "/users/profile/save",
+    data: JSON.stringify(userInfo),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
   });
 }

@@ -22,19 +22,20 @@ router.get("/trending", (req, res, next) => {
       id: "trending",
       title: "Trending Posts",
       posts: posts,
+      user: req.user,
     });
   });
 });
 
 /** EJS: Form for creating a new post on the Bulletin Board. */
 router.get("/create", (req, res, next) => {
-  res.render("create_post");
+  res.render("create_post", { user: req.user });
 });
 
 /** EJS: The detailed view of a single post. */
 router.get("/:id", (req, res, next) => {
-  datasource.retrieve(req.params["id"], req.user.id, (post) => {
-    res.render("view_post", { title: post.title, post: post });
+  datasource.retrieve(req.params["id"], req.user.id, ({ post, replies }) => {
+    res.render("view_post", { title: post.title, post: post, replies: replies, user: req.user });
   });
 });
 
@@ -80,6 +81,22 @@ router.post("/:id/upvotes/", (req, res, next) => {
 
   datasource.upvote(req.params["id"], req.user, vote, () => {
     res.send();
+  });
+});
+
+router.post("/:id/reply/", function (req, res, next) {
+
+  var reply = req.body;
+  datasource.createReply(req.params["id"], req.user, reply, (result) => {
+    if (!result.success) {
+      res.status(400);
+    }
+    var result = {
+      success: result.success,
+      redirect_uri: "/posts/" + result.post_id,
+      error_message: result.error_message,
+    };
+    res.send(result);
   });
 });
 

@@ -168,3 +168,26 @@ function edite_profile(userInfo, callback) {
     },
   });
 }
+
+function save_reply(id, reply, callback) {
+  $.ajax({
+    type: "POST",
+    url: "/posts/" + id + "/reply",
+    data: JSON.stringify(reply),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
+  });
+}

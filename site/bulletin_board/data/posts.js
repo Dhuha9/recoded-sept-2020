@@ -21,6 +21,7 @@ posts.retrieve = (id, userId, callback) => {
       Posts.id AS id,
       Posts.title,
       Author.username AS author,
+      Author.id AS user_id,
       Posts.date,
       Posts.body AS body,
       PostUpvotes.post_id IS NOT NULL AS liked,
@@ -42,11 +43,12 @@ posts.retrieve = (id, userId, callback) => {
     var postInfo = {
       id: row.id,
       title: row.title,
-      author: row.user_id,
+      author: row.author,
       date: row.date,
       liked: row.liked,
       url: "/posts/" + id,
-      body: row.body
+      body: row.body,
+      user_id: row.user_id
     };
 
     var sqlReplies = `

@@ -192,15 +192,12 @@ function save_reply(id, reply, callback) {
   });
 }
 
-function changePassword(password, callback) {
-  var newPassword = {
-    password: password,
-  };
+function changePassword(passwordInfo, callback) {
 
   $.ajax({
     type: "POST",
     url: "/users/change",
-    data: JSON.stringify(newPassword),
+    data: JSON.stringify(passwordInfo),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (result) {

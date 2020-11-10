@@ -97,6 +97,18 @@ router.get("/profile", (req, res, next) => {
   });
 });
 
+router.get("/profile/:id", (req, res, next) => {
+  datasource.get(req.params["id"], (user) => {
+    res.render("profile", {
+      id: "profile",
+      title: "profile",
+      edite: true,
+      user: req.user,
+    });
+  })
+
+});
+
 router.get("/profile/edite", (req, res, next) => {
   res.render("profile", {
     id: "profileEdite",
@@ -109,7 +121,6 @@ router.get("/profile/edite", (req, res, next) => {
 
 router.post("/profile/save", function (req, res, next) {
   var profile = req.body;
-  console.log("in route");
   datasource.edite(profile, req.user, (result) => {
     if (!result.success) {
       res.status(400);
@@ -124,7 +135,6 @@ router.post("/profile/save", function (req, res, next) {
 });
 
 router.get("/change", (req, res, next) => {
-  console.log("req", req);
   res.render("change_password", {
     id: "changePassword",
     user: req.user,
@@ -132,9 +142,8 @@ router.get("/change", (req, res, next) => {
 });
 
 router.post("/change", function (req, res, next) {
-  var newPassword = req.body.password;
-  console.log("in route");
-  datasource.changePassword(newPassword, req.user, (result) => {
+  var passwordInfo = req.body;
+  datasource.changePassword(passwordInfo, req.user, (result) => {
     if (!result.success) {
       res.status(400);
     }

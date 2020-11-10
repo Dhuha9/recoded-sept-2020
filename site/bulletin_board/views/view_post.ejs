@@ -16,7 +16,7 @@
         </h2>
 
         <p class="post-meta">Posted by
-          <%= post.author %>
+          <a href="/users/profile/<%=post.user_id%>"><%= post.author %></a>
           on <%= post.date %></p>
         <p class="post-subtitle">
           <%= post.body %>
@@ -39,11 +39,17 @@
         <div class="container py-3">
           <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
+              <p class="font-weight-bold mb-4"> Replies </p>
               <% if (replies) { replies.forEach(function(reply){ %>
-              <p><span><%= reply.firstname + reply.lastname || reply.username %></span> <span><%= reply.date %></span>
+              <p><a href="/users/profile/<%=post.user_id%>"
+                  class="font-weight-bold m-2"><%= reply.firstname + reply.lastname || reply.username %></a>
+                <span class="font-sizeing"><%= reply.date %></span>
+
               </p>
-              <p><%= reply.content %> </p>
+              <p class="mx-4"><%= reply.content %> </p>
+              <hr />
               <% })}; %>
+
             </div>
           </div>
         </div>

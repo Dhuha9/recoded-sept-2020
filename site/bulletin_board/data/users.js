@@ -161,26 +161,53 @@ users.edite = (profile, user, callback) => {
   });
 };
 
-users.changePassword = (newPassword, user, callback) => {
+users.changePassword = (passwordInfo, user, callback) => {
+  db.get(
+    "SELECT passwordHash FROM Users WHERE id = ?",
+    [user.id],
+    (err, row) => {
+      if (err) {
+        var result = {
+          success: false,
+          error_message: err,
+        };
+        return callback(result);
+      }
 
-  bcrypt.hash(newPassword, saltRounds, (err, passwordHash) => {
-    var sql =
-      "UPDATE users SET passwordHash=? WHERE id = ?";
+      bcrypt.compare(
+        passwordInfo.prevPassword,
+        row.passwordHash,
+        (err, passwords_match) => {
+          if (!passwords_match) {
+            var result = {
+              success: false,
+              error_message: "Previous Pasword Incorect.",
+            };
+            return callback(result);
+          }
 
-    var params = [
-      passwordHash,
-      user.id,
-    ];
+          bcrypt.hash(passwordInfo.newPassword, saltRounds, (err, passwordHash) => {
+            var sql =
+              "UPDATE users SET passwordHash=? WHERE id = ?";
 
-    db.run(sql, params, function (err, result) {
-      var success = !err;
-      var result = {
-        success: success,
-        error_message: err,
-      };
-      return callback(result);
+            var params = [
+              passwordHash,
+              user.id,
+            ];
+
+            db.run(sql, params, function (err, result) {
+              var success = !err;
+              var result = {
+                success: success,
+                error_message: err,
+              };
+              return callback(result);
+            });
+          });
+        });
+
     });
-  });
+
 };
 
 module.exports = users;

@@ -123,4 +123,28 @@ router.post("/profile/save", function (req, res, next) {
   });
 });
 
+router.get("/change", (req, res, next) => {
+  console.log("req", req);
+  res.render("change_password", {
+    id: "changePassword",
+    user: req.user,
+  });
+});
+
+router.post("/change", function (req, res, next) {
+  var newPassword = req.body.password;
+  console.log("in route");
+  datasource.changePassword(newPassword, req.user, (result) => {
+    if (!result.success) {
+      res.status(400);
+    }
+    var result = {
+      success: result.success,
+      redirect_uri: "/",
+      error_message: result.error_message,
+    };
+    res.send(result);
+  });
+});
+
 module.exports = router;

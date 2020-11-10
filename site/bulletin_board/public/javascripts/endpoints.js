@@ -191,3 +191,30 @@ function save_reply(id, reply, callback) {
     },
   });
 }
+
+function changePassword(password, callback) {
+  var newPassword = {
+    password: password,
+  };
+
+  $.ajax({
+    type: "POST",
+    url: "/users/change",
+    data: JSON.stringify(newPassword),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      callback({
+        success: true,
+        redirect_uri: result.redirect_uri,
+      });
+    },
+    error: function (error) {
+      callback({
+        success: false,
+        redirect_uri: null,
+        error_message: error.responseJSON.error_message,
+      });
+    },
+  });
+}

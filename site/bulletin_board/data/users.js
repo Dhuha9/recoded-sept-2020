@@ -161,4 +161,26 @@ users.edite = (profile, user, callback) => {
   });
 };
 
+users.changePassword = (newPassword, user, callback) => {
+
+  bcrypt.hash(newPassword, saltRounds, (err, passwordHash) => {
+    var sql =
+      "UPDATE users SET passwordHash=? WHERE id = ?";
+
+    var params = [
+      passwordHash,
+      user.id,
+    ];
+
+    db.run(sql, params, function (err, result) {
+      var success = !err;
+      var result = {
+        success: success,
+        error_message: err,
+      };
+      return callback(result);
+    });
+  });
+};
+
 module.exports = users;
